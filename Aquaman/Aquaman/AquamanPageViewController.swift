@@ -132,10 +132,12 @@ open class AquamanPageViewController: UIViewController, AMPageControllerDataSour
         
         childScrollViewObservation?.invalidate()
         let keyValueObservation = currentChildScrollView?.observe(\.contentOffset, options: [.new, .old], changeHandler: { [weak self] (scrollView, change) in
-            guard let self = self, change.newValue != change.oldValue else {
-                return
+            DispatchQueue.main.async {
+                guard let self = self, change.newValue != change.oldValue else {
+                    return
+                }
+                self.childScrollViewDidScroll(scrollView)
             }
-            self.childScrollViewDidScroll(scrollView)
         })
         childScrollViewObservation = keyValueObservation
         
